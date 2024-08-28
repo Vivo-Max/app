@@ -17,7 +17,7 @@ jobs:
         run: |
           git config --global user.name "Vivo-Max"
           git config --global user.email "1173287796@qq.com"
-          git remote add gitee git@gitee.com:angxyaa/app.git
+          git remote add app git@gitee.com:angxyaa/app.git
           git fetch gitee
           git merge gitee/main || echo "No new changes to merge"
 
