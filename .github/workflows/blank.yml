@@ -12,5 +12,5 @@ jobs:
       - name: Sync to Gitee
         uses: wearerequired/git-mirror-action@v1
         with:
-          source-repo: "git@github.com:Vivo-Max/app.git"
-          destination-repo: "git@gitee.com:angxyaa/app.git"
+          source-repo: "git@gitee.com:angxyaa/app.git"
+          destination-repo: "git@github.com:Vivo-Max/app.git"
