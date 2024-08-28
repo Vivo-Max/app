@@ -1,35 +1,28 @@
-name: Sync Gitee to GitHub
+name: Sync to Gitee
 
 on:
   push:
     branches:
-      - main  # 指定要同步的分支，如果需要同步其他分支，请更改
+      - main  # 当主分支有更新时触发
 
 jobs:
   sync:
     runs-on: ubuntu-latest
 
     steps:
-      - name: Checkout Gitee repository
+      - name: Checkout code
         uses: actions/checkout@v2
-        with:
-          repository: angxyaa/app  # Gitee 仓库名
-          token: ${{ e146f86c622028b9b858caa21a7faf89 }}  # 使用 GitHub Secrets 存储的 Gitee 访问 token
-          path: gitee-repo
-
-      - name: Checkout GitHub repository
-        uses: actions/checkout@v2
-        with:
-          repository: Vivo-Max/app  # GitHub 仓库名
-          token: ${{ secrets.GITHUB_TOKEN }}  # GitHub 默认 token
-          path: github-repo
-
-      - name: Sync changes to GitHub
+      
+      - name: Setup Gitee Git
         run: |
-          cd gitee-repo
-          # 添加 GitHub 远程仓库
-          git remote add github ../github-repo
-          # 拉取最新的 GitHub 变化
-          git pull github main || true
-          # 添加并提交更新的内容
-          git push githu
+          git config --global user.email "1173287796@qq.com"   # 替换为你的邮箱
+          git config --global user.name "Vivo-Max"            # 替换为你的用户名
+
+      - name: Push to Gitee
+        env:
+          GITEE_TOKEN: ${{ secrets.GITEE_TOKEN }}
+        run: |
+          git remote add gitee https://gitee.com/${{ secrets.GITEE_USERNAME }}/git@gitee.com:angxyaa/app.git # 替换为你的 Gitee 仓库地址
+          git add .
+          git commit -m "Sync from GitHub" || echo "No changes to commit"
+          git push gitee main --force
