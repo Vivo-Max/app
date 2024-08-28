@@ -22,7 +22,7 @@ jobs:
         env:
           GITEE_TOKEN: ${{ secrets.GITEE_TOKEN }}
         run: |
-          git remote add gitee git@gitee.com:angxyaa/app.git # 替换为你的 Gitee 仓库地址
+          git remote add gitee https://gitee.com/${{ secrets.GITEE_USERNAME }}/git@gitee.com:angxyaa/app.git # 替换为你的 Gitee 仓库地址
           git add .
           git commit -m "Sync from GitHub" || echo "No changes to commit"
           git push gitee main --force
