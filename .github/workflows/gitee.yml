@@ -1,0 +1,37 @@
+name: Gitee
+
+on:
+  workflow_dispatch: # 允许手动触发
+  schedule:
+    - cron: '0 * * * *' # 每小时运行一次
+
+jobs:
+  sync:
+    runs-on: ubuntu-latest # 使用最新的 Ubuntu 环境
+
+    steps:
+      - name: Checkout GitHub repository
+        uses: actions/checkout@v2
+        with:
+          repository: Vivo-Max/app # 替换为你的 GitHub 仓库
+          token: ${{ secrets.GITHUB_TOKEN }} # 使用 GitHub 提供的 token
+
+      - name: Install git
+        run: sudo apt-get install git
+
+      - name: Gitee
+        run: |
+          # 配置 Gitee 的 repo 地址
+          GITEE_REPO=git@gitee.com:angxyaa/app.git # 替换为你的 Gitee 仓库 URL
+          echo "Cloning from Gitee..."
+          git clone $GITEE_REPO temp-repo # 克隆 Gitee 的仓库到临时目录
+          cp -r temp-repo/* . # 将临时目录的内容复制到当前工作目录
+          rm -rf temp-repo # 删除临时目录
+
+      - name: Commit and push changes
+        run: |
+          git config --global user.name "Vivo-Max" # 替换为你的 GitHub 用户名
+          git config --global user.email "1173287796@qq.com" # 替换为你的电子邮件
+          git add .
+          git commit -m "Sync updates from Gitee" || echo "No changes to commit." # 如果没有变化，则不提交
+          git push origin main # 推送到主分支，视你的默认分支而定
