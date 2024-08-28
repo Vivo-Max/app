@@ -1,0 +1,29 @@
+name: Sync to Gitee
+
+on:
+  push:
+    branches:
+      - main  # 当主分支有更新时触发
+
+jobs:
+  sync:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v2
+      
+      - name: Setup Gitee Git
+        run: |
+          git config --global user.email "1173287796@qq.com"   # 替换为你的邮箱
+          git config --global user.name "angxyaa"            # 替换为你的用户名
+
+      - name: Push to Gitee
+        env:
+          GITEE_TOKEN: ${{ secrets.GITEE_TOKEN }}
+        run: |
+          git remote add gitee https://gitee.com/angxyaa/app.git # 替换为你的 Gitee 仓库地址
+          git add .
+          git commit -m "Sync from GitHub" || echo "No changes to commit"
+          git push gitee main --force
+   
